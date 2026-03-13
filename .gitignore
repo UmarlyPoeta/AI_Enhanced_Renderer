@@ -1,1 +1,23 @@
-build/*
+build/
+out/
+.vscode/
+
+# CMake artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+Makefile
+
+# Binaries and libraries
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dll
+*.dylib
+*.exe
+
+# Logs
+*.log

@@ -13,6 +13,74 @@
 
 Projekt łączy renderowanie 3D w niższej rozdzielczości przez **Modern OpenGL** z rekonstrukcją jakości przez modele **super-resolution** (FSRCNN/EDSR). Dla początkujących zalecane podejście CPU: renderuj scenę do FBO w 540p, przechwyć przez PBO do OpenCV, upscaluj przez AI, wyświetl wynik.
 
+
+## GitHub Setup
+
+Repo zawiera gotowe elementy pod współpracę zespołową:
+- `.github/workflows/ci.yml` - podstawowy build CMake na Ubuntu,
+- `.github/ISSUE_TEMPLATE/bug_report.md` - zgłaszanie błędów,
+- `.github/ISSUE_TEMPLATE/feature_request.md` - propozycje funkcji,
+- `.github/pull_request_template.md` - checklista dla PR.
+
+## Struktura katalogów
+
+```text
+.
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   └── workflows/
+├── assets/
+├── cmake/
+│   ├── Dependencies.cmake
+│   └── ProjectOptions.cmake
+├── docs/
+├── include/
+│   └── renderer/
+│       ├── ai/
+│       ├── core/
+│       ├── platform/
+│       ├── rendering/
+│       ├── scene/
+│       └── utils/
+├── models/
+├── shaders/
+│   ├── compute/
+│   ├── postprocess/
+│   └── scene/
+├── src/
+│   ├── ai/
+│   ├── core/
+│   ├── platform/
+│   ├── rendering/
+│   ├── scene/
+│   ├── utils/
+│   ├── CMakeLists.txt
+│   └── main.cpp
+├── tests/
+└── tools/
+```
+
+## Shared CMakeLists
+
+Projekt jest podzielony na warstwy CMake:
+- `CMakeLists.txt` (root): konfiguracja projektu, opcje, zależności i `add_subdirectory(src)`.
+- `src/CMakeLists.txt`: budowa targetu aplikacji, linkowanie OpenGL/GLFW/ASSIMP/GLM.
+- `cmake/ProjectOptions.cmake`: wspólne ustawienia kompilacji i include path dla targetów.
+- `cmake/Dependencies.cmake`: FetchContent dla bibliotek zewnętrznych.
+
+### Opcje builda
+
+- `AIER_ENABLE_ONNXRUNTIME=ON` - dołącza lokalne ONNX Runtime z `extern/onnxruntime`.
+
+## Quick Start
+
+```bash
+cmake -S . -B build
+cmake --build build
+./build/AIEnhancedRenderer
+```
+
+
 **Szacowany czas realizacji:** ~8–12 tygodni
 
 | Faza | Czas | Opis |

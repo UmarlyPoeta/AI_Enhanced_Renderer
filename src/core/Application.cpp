@@ -1,6 +1,7 @@
-#include "Application.hpp"
+#include "core/Application.hpp"
 
-void Application::run()
-{
-    
+#include <iostream>
+
+void Application::run() {
+    std::cout << "AI-Enhanced Renderer skeleton is ready." << std::endl;
 }
