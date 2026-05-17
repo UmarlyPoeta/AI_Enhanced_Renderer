@@ -6,15 +6,26 @@ file(GLOB_RECURSE AIER_SRC CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
+# 🔥 GLAD jako osobna biblioteka (TO JEST KLUCZ)
+add_library(glad STATIC
+    ${CMAKE_SOURCE_DIR}/extern/glad/src/gl.c
+)
+
+target_include_directories(glad PUBLIC
+    ${CMAKE_SOURCE_DIR}/extern/glad/include
+)
+
+# 🔥 Twój executable (JUŻ BEZ glad.c tutaj)
 add_executable(${PROJECT_NAME}
     ${AIER_SRC}
-    ${PROJECT_SOURCE_DIR}/extern/glad/src/glad.c
 )
 
 aier_apply_project_options(${PROJECT_NAME})
 
+# 🔥 Linkowanie (dodany glad)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+        glad
         OpenGL::GL
         glfw
         assimp
