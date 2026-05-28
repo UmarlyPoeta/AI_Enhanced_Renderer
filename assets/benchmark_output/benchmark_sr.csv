@@ -1,0 +1,11 @@
+model,image,inference_ms,psnr_vs_bilinear,output_w,output_h
+FSRCNN,test_0.png,8.20,inf,256,256
+FSRCNN,test_1.png,0.34,inf,256,256
+FSRCNN,test_2.png,0.32,inf,256,256
+FSRCNN,test_3.png,0.30,inf,256,256
+FSRCNN,test_4.png,0.16,inf,256,256
+ESPCN,test_0.png,0.14,inf,256,256
+ESPCN,test_1.png,0.17,inf,256,256
+ESPCN,test_2.png,0.15,inf,256,256
+ESPCN,test_3.png,0.14,inf,256,256
+ESPCN,test_4.png,0.16,inf,256,256

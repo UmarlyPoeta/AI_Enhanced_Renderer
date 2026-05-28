@@ -74,14 +74,81 @@ Projekt jest podzielony na warstwy CMake:
 
 ## Quick Start
 
+### Wymagania
+
+- CMake 3.20+, kompilator C++20
+- OpenGL 3.3+, GLFW, OpenCV 4.x z modułem `dnn_superres`
+- Python 3 (skrypty benchmarków)
+
+**Fedora:**
 ```bash
-cmake -S . -B build
-cmake --build build
-./build/AIEnhancedRenderer
+sudo dnf install cmake gcc-c++ glfw-devel opencv-devel
 ```
 
+**Ubuntu/Debian:**
+```bash
+sudo apt install cmake g++ libglfw3-dev libopencv-dev libopencv-contrib-dev
+```
 
-**Szacowany czas realizacji:** ~8–12 tygodni
+**Windows:** pełna instrukcja w [docs/WINDOWS_SETUP.md](docs/WINDOWS_SETUP.md)
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\setup_extern.ps1
+vcpkg install glfw3:x64-windows opencv4[contrib,dnn]:x64-windows
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
+cmake --build build --config Release
+.\build\src\Release\AIEnhancedRenderer.exe
+```
+
+### Build (Linux / macOS)
+
+```bash
+bash tools/setup_extern.sh          # pobiera GLM + ImGui do extern/
+bash models/download_models.sh      # opcjonalnie: modele FSRCNN/ESPCN
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+./build/src/AIEnhancedRenderer
+```
+
+### Sterowanie
+
+| Klawisz | Akcja |
+|---------|-------|
+| WASD | Ruch kamery |
+| Q / E | Góra / dół |
+| PPM (poza panelem UI) | Włącz/wyłącz mouse look |
+| ESC | Wyjście |
+
+ImGui panel: tryb wyświetlania (Bilinear / AI), wybór modelu, skala renderowania, FPS i timings.
+
+### Benchmarki (Python)
+
+```bash
+python3 tools/benchmark_sr.py       # FSRCNN vs ESPCN
+python3 tools/benchmark_full.py   # PSNR/SSIM raport CSV
+python3 tools/plot_pipeline.py    # wykres etapów pipeline
+```
+
+Decyzja modelu: [docs/MODEL_DECISION.md](docs/MODEL_DECISION.md)
+
+### Opcje CMake
+
+| Opcja | Domyślnie | Opis |
+|-------|-----------|------|
+| `AIER_ENABLE_OPENCV` | ON | Integracja OpenCV SR |
+| `AIER_ENABLE_IMGUI` | ON | Panel debug UI |
+| `AIER_ENABLE_ONNXRUNTIME` | OFF | ONNX z `extern/onnxruntime` |
+
+---
+
+## What we learned
+
+- **FBO + dynamic resolution** — render w niższej rozdzielczości daje realny zysk FPS; AI rekompensuje utratę detali.
+- **PBO double-buffering** — asynchroniczny readback pozwala nakładać pracę GPU i CPU.
+- **Trade-off modeli** — ESPCN szybszy, FSRCNN lepszy jakościowo; EDSR tylko offline.
+- **Integracja GPU↔CPU** — najwięcej bugów przy flip Y, RGBA↔BGR i rozmiarach tensorów.
+
+---
 
 | Faza | Czas | Opis |
 |------|------|------|
