@@ -26,7 +26,7 @@ void main() {
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
     vec3 specular = 0.4 * spec * vec3(1.0);
 
-    vec3 texColor = texture(diffuseMap, TexCoord).rgb;
-    vec3 result = (ambient + diffuse + specular) * texColor * VertexColor;
+    // Usuwamy wymnażanie przez pustą, czarną teksturę żeby uwolnić kolory z kodu C++!
+    vec3 result = (ambient + diffuse + specular) * VertexColor;
     FragColor = vec4(result, 1.0);
 }

@@ -61,7 +61,7 @@ private:
 
     DisplayMode displayMode_ = DisplayMode::Bilinear;
     ai::UpscaleMethod aiMethod_ = ai::UpscaleMethod::FSRCNN;
-    float resolutionScale_ = 0.67f;
+    float resolutionScale_ = 0.33f; // Obniżone z 0.67f by potężnie podwyższyć wydajność na iGPU/mobile CPU
     int scaleFactor_ = 2;
     float lastMouseX_ = 0.0f;
     float lastMouseY_ = 0.0f;
