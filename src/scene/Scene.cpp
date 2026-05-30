@@ -43,8 +43,23 @@ void Scene::draw(rendering::Shader& shader, const Camera& camera, float aspect) 
         model = glm::scale(model, obj.scale);
         shader.setMat4("model", model);
         shader.setVec3("objectColor", obj.color);
-        cubeMesh_.draw();
+        if (importedMesh_) {
+            importedMesh_->draw();
+        }
+        else {
+            cubeMesh_.draw();
+        }
     }
 }
+bool Scene::loadModel(const std::string& path)
+{
+    auto mesh = rendering::ModelLoader::load(path);
 
+    if (!mesh) {
+        return false;
+    }
+
+    importedMesh_ = std::move(mesh);
+    return true;
+}
 }  // namespace renderer::scene

@@ -14,6 +14,13 @@
 #endif
 
 #include <algorithm>
+#ifdef max
+#undef max
+#endif
+
+#ifdef min
+#undef min
+#endif
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -269,7 +276,26 @@ void Application::renderUI() {
     if (ImGui::Combo("Display Mode", &displayModeInt, displayModes, 2)) {
         displayMode_ = static_cast<DisplayMode>(displayModeInt);
     }
+    const char* captureModes[] = {
+    "CPU",
+    "GPU"
+    };
 
+    int captureModeInt = static_cast<int>(captureBackend_);
+
+    if (ImGui::Combo(
+        "Capture Backend",
+        &captureModeInt,
+        captureModes,
+        2))
+    {
+        captureBackend_ =
+            static_cast<rendering::CaptureBackend>(
+                captureModeInt);
+
+        frameCapture_.setBackend(
+            captureBackend_);
+    }
     const ai::UpscaleMethod prevMethod = aiMethod_;
     const int prevScale = scaleFactor_;
 
@@ -311,6 +337,22 @@ void Application::renderUI() {
     }
 
     ImGui::Separator();
+
+    ImGui::InputText(
+        "Model Path",
+        importedModelPath_,
+        sizeof(importedModelPath_)
+    );
+
+    if (ImGui::Button("Load Model")) {
+
+        if (scene_->loadModel(importedModelPath_)) {
+            modelStatus_ = std::string("Loaded model: ") + importedModelPath_;
+        }
+        else {
+            modelStatus_ = std::string("Failed to load model: ") + importedModelPath_;
+}
+}
     ImGui::Text("  Render:   %.2f", timings_.renderMs);
     ImGui::Text("  Readback: %.2f", timings_.readbackMs);
     ImGui::Text("  AI:       %.2f", timings_.aiMs);

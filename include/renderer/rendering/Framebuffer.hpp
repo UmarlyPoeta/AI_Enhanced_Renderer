@@ -18,6 +18,10 @@ public:
     void resize(int width, int height);
     void bind() const;
     void unbind() const;
+    void setSourceTexture(unsigned int texture)
+    {
+        sourceTexture_ = texture;
+    }
 
     [[nodiscard]] unsigned int colorTexture() const { return colorTexture_; }
     [[nodiscard]] int width() const { return width_; }
@@ -28,6 +32,7 @@ private:
     unsigned int fbo_ = 0;
     unsigned int colorTexture_ = 0;
     unsigned int depthTexture_ = 0;
+    unsigned int sourceTexture_ = 0;
     int width_ = 0;
     int height_ = 0;
 };

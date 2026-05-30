@@ -17,7 +17,13 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     AIER_PROJECT_ROOT="${PROJECT_SOURCE_DIR}"
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glm::glm)
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE
+    OpenGL::GL
+    glm::glm
+    assimp::assimp
+)
 
 if(TARGET glfw)
     target_link_libraries(${PROJECT_NAME} PRIVATE glfw)

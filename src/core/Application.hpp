@@ -60,6 +60,8 @@ private:
     utils::PipelineTimings timings_;
 
     DisplayMode displayMode_ = DisplayMode::Bilinear;
+    rendering::CaptureBackend captureBackend_ =
+        rendering::CaptureBackend::CPU;
     ai::UpscaleMethod aiMethod_ = ai::UpscaleMethod::FSRCNN;
     float resolutionScale_ = 0.33f; // Obniżone z 0.67f by potężnie podwyższyć wydajność na iGPU/mobile CPU
     int scaleFactor_ = 2;
@@ -70,6 +72,7 @@ private:
 
     std::string projectRoot_;
     std::string modelStatus_;
+    char importedModelPath_[512] = "assets/models/suzanne.obj";
     ai::UpscaleMethod lastLoadedMethod_ = ai::UpscaleMethod::FSRCNN;
     int lastLoadedScale_ = 2;
 #ifdef AIER_HAS_OPENCV

@@ -7,9 +7,15 @@ option(AIER_ENABLE_OPENCV "Enable OpenCV super-resolution integration" ON)
 option(AIER_ENABLE_IMGUI "Enable Dear ImGui debug UI" ON)
 
 include(cmake/Dependencies.cmake)
-
+find_package(assimp CONFIG REQUIRED)
 if(AIER_ENABLE_OPENCV)
-    find_package(OpenCV REQUIRED COMPONENTS core imgproc imgcodecs dnn)
+    find_package(OpenCV REQUIRED COMPONENTS
+    core
+    imgproc
+    imgcodecs
+    dnn
+    dnn_superres
+)
     find_library(OPENCV_DNN_SUPERRES NAMES opencv_dnn_superres
         PATHS /usr/lib64 /usr/lib ${OpenCV_INSTALL_PATH}/lib ${OpenCV_DIR}/lib)
 endif()
