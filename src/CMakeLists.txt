@@ -32,6 +32,30 @@ target_link_libraries(${PROJECT_NAME}
         glm::glm
 )
 
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glm::glm)
+
+if(TARGET glfw)
+    target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+elseif(TARGET glfw3)
+    target_link_libraries(${PROJECT_NAME} PRIVATE glfw3)
+elseif(TARGET GLFW::GLFW)
+    target_link_libraries(${PROJECT_NAME} PRIVATE GLFW::GLFW)
+endif()
+
+if(AIER_ENABLE_IMGUI)
+    target_link_libraries(${PROJECT_NAME} PRIVATE imgui_lib)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE AIER_HAS_IMGUI=1)
+endif()
+
+if(AIER_ENABLE_OPENCV)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${OpenCV_LIBS})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE AIER_HAS_OPENCV=1)
+    if(OPENCV_DNN_SUPERRES)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENCV_DNN_SUPERRES})
+    endif()
+endif()
+
 if(AIER_ENABLE_ONNXRUNTIME)
     target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/extern/onnxruntime/include)
     target_link_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/extern/onnxruntime/lib)

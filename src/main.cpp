@@ -1,7 +1,15 @@
 #include "core/Application.hpp"
 
-int main() {
-    Application app;
+#include <iostream>
+#include <stdexcept>
 
-    app.run();
+int main() {
+    try {
+        renderer::core::Application app;
+        app.run();
+    } catch (const std::exception& e) {
+        std::cerr << "Fatal error: " << e.what() << '\n';
+        return 1;
+    }
+    return 0;
 }

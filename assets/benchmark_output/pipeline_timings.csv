@@ -1,0 +1,2 @@
+render_ms,readback_ms,ai_ms,upload_ms,present_ms,total_ms,fps
+2.83114,0.000376,212.152,0.649234,0.061946,216.119,4.62709

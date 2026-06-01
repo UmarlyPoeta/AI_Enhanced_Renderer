@@ -3,9 +3,20 @@ cmake_minimum_required(VERSION 3.20)
 project(AIEnhancedRenderer VERSION 0.1.0 LANGUAGES C CXX)
 
 option(AIER_ENABLE_ONNXRUNTIME "Link local ONNX Runtime from extern/onnxruntime" OFF)
+option(AIER_ENABLE_OPENCV "Enable OpenCV super-resolution integration" ON)
+option(AIER_ENABLE_IMGUI "Enable Dear ImGui debug UI" ON)
 
-# Shared dependency setup (FetchContent for glfw/glm/assimp/imgui).
 include(cmake/Dependencies.cmake)
 
-# Build main target from src/ and apply shared options there.
+if(AIER_ENABLE_OPENCV)
+    find_package(OpenCV REQUIRED COMPONENTS core imgproc imgcodecs dnn)
+    find_library(OPENCV_DNN_SUPERRES NAMES opencv_dnn_superres
+        PATHS /usr/lib64 /usr/lib ${OpenCV_INSTALL_PATH}/lib ${OpenCV_DIR}/lib)
+endif()
+
 add_subdirectory(src)
+
+if(AIER_ENABLE_OPENCV)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
